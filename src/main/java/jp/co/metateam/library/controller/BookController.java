@@ -42,7 +42,7 @@ public class BookController {
         
         model.addAttribute("bookMstList", bookMstList);
 
-        return "book/index";
+        return "/book/index";
     }
 
     @GetMapping("/book/add")
@@ -51,7 +51,7 @@ public class BookController {
             model.addAttribute("bookMstDto", new BookMstDto());
         }
 
-        return "book/add";
+        return "/book/add";
     }
 
     /**
@@ -69,7 +69,7 @@ public class BookController {
             if(result.hasErrors()){ 
                 model.addAttribute("bookMstDto", bookMstDto);
                 model.addAttribute("org.springframework.validation.BindingResult.bookMstDto", result);
-                return"book/add";
+                return "/book/add";
             }
 
             BookMst isbnExist = this.bookMstService.selectByIsbn(bookMstDto.getIsbn());
@@ -77,12 +77,12 @@ public class BookController {
             if(isbnExist != null){
                 result.rejectValue("isbn", "error.value", "ISBNは登録済みです");
                 errisbnFlg = true;
-                return"/book/add";
+                return "/book/add";
             }
             
             bookMstService.save(bookMstDto);
 
-            return "redirect:add";
+            return "/book/index";
 
         }catch(Exception e){
             log.error("登録失敗: " + e.getMessage());
@@ -90,7 +90,7 @@ public class BookController {
             model.addAttribute("errorMessage","書籍情報の保存中にエラーが発生しました。もう一度入力をしてください。");
 
             this.bookMstService.save(bookMstDto);
-            return "redirect:/book/index";
+            return "redirect:/add";
                 
 
 
