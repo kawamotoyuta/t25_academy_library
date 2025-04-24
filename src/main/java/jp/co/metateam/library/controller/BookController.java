@@ -1,6 +1,7 @@
 package jp.co.metateam.library.controller;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -13,6 +14,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import jakarta.validation.Valid;
+import jp.co.metateam.library.model.Account;
+import jp.co.metateam.library.model.AccountDto;
 import jp.co.metateam.library.model.BookMst;
 import jp.co.metateam.library.model.BookMstDto;
 import jp.co.metateam.library.service.BookMstService;
@@ -39,7 +42,7 @@ public class BookController {
         
         model.addAttribute("bookMstList", bookMstList);
 
-        return "book/index";
+        return "/book/index";
     }
 
     @GetMapping("/book/add")
@@ -48,7 +51,53 @@ public class BookController {
             model.addAttribute("bookMstDto", new BookMstDto());
         }
 
-        return "book/add";
+        return "/book/add";
     }
-    
+
+    /**
+     * @param BookMstDto
+     * @param result
+     * @param ra
+     * @return
+     */
+    @PostMapping("/book/add")
+    public String register(@Valid @ModelAttribute BookMstDto bookMstDto, BindingResult result, RedirectAttributes ra, Model model) {
+        try{
+
+            boolean errisbnFlg = false;
+            
+            if(result.hasErrors()){ 
+                model.addAttribute("bookMstDto", bookMstDto);
+                model.addAttribute("org.springframework.validation.BindingResult.bookMstDto", result);
+                return "/book/add";
+            }
+
+            BookMst isbnExist = this.bookMstService.selectByIsbn(bookMstDto.getIsbn());
+
+            if(isbnExist != null){
+                result.rejectValue("isbn", "error.value", "ISBNは登録済みです");
+                errisbnFlg = true;
+                return "/book/add";
+            }
+            
+            bookMstService.save(bookMstDto);
+
+            return "/book/index";
+
+        }catch(Exception e){
+            log.error("登録失敗: " + e.getMessage());
+            log.error("書籍情報の保存に失敗しました",e);
+            model.addAttribute("errorMessage","書籍情報の保存中にエラーが発生しました。もう一度入力をしてください。");
+
+            return "redirect:/add";
+
+            //
+
+        }
+    }
+
 }
+
+
+    
+

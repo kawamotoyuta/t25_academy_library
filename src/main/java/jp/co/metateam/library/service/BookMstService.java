@@ -5,12 +5,20 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import io.micrometer.common.util.StringUtils;
+import jakarta.validation.Valid;
+import jp.co.metateam.library.model.Account;
 import jp.co.metateam.library.model.BookMst;
 import jp.co.metateam.library.model.BookMstDto;
 import jp.co.metateam.library.repository.BookMstRepository;
@@ -24,6 +32,13 @@ public class BookMstService {
     public BookMstService(BookMstRepository bookMstRepository){
         this.bookMstRepository = bookMstRepository;
     }
+
+    public BookMst selectByIsbn(String isbn){
+        return bookMstRepository.selectByIsbn(isbn);
+
+    }
+
+
     
     public List<BookMstDto> findAvailableWithStockCount() {
         List<BookMst> books = this.bookMstRepository.findLimitedBook();
@@ -42,8 +57,15 @@ public class BookMstService {
 
         return bookMstDtoList;
     }
-    
+
+    @Transactional
+    public void save(BookMstDto bookMstDto) {
+        BookMst bookMst = new BookMst();
+        bookMst.setIsbn(bookMstDto.getIsbn());
+        bookMst.setTitle(bookMstDto.getTitle());
+
+        this.bookMstRepository.save(bookMst);
+
+    }
 }
-
-
 

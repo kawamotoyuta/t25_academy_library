@@ -19,6 +19,21 @@
                         <div class="mb30 flexarea">
                             <span>
                                 <a th:href="@{/book/index}" class="link">← 一覧へ戻る</a>
+                                <p style="color:#ff0000;">*は必須です</p> 
+                                <tr>
+                                        <th scope="col">書籍名<span style="color:  #ff0000;">*</span></th>
+                                        <p><td><input type="text" name="title" th:field="*{title}" placeholder="書籍名を入力"/></td></p>
+                                        <div class="error_msg" th:if="${#fields.hasErrors('title')}" th:errors="*{title}"></div>
+                                </tr>
+
+                                <p>
+                                <tr>
+                                        <th scope="col">ISBN<span style="color:#ff0000;">*</span></th>
+                                        <p><td><input  name="isbn" th:field="*{isbn}" placeholder="ISBNを入力"/></td></p>
+                                        <div class="error_msg" th:if="${#fields.hasErrors('isbn')}" th:errors="*{isbn}"></div>
+                                </tr>
+                                </p>        
+                                        <p><button type="submit">保存</button></p>
                             </span>
                         </div>
                     </form>
@@ -28,3 +43,4 @@
     </div>
     <div th:replace="~{common :: footer}"></div>
 </body>
+
