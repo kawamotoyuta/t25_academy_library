@@ -89,7 +89,6 @@ public class BookController {
             log.error("書籍情報の保存に失敗しました",e);
             model.addAttribute("errorMessage","書籍情報の保存中にエラーが発生しました。もう一度入力をしてください。");
 
-            this.bookMstService.save(bookMstDto);
             return "redirect:/add";
                 
 
