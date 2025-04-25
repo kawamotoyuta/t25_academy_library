@@ -21,7 +21,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr th:each="book : ${bookMstList}" ></tr>
+                            <tr th:each="book : ${bookMstList}" >
                                 <td th:text="${book.title}">title</td>
                                 <td th:text="${book.isbn}">isbn</td>
                             </tr>
