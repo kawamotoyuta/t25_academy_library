@@ -76,13 +76,17 @@
 
 .book_table {
   width: 100%;
-  border-collapse: collapse; /* 枠線を重ねてスッキリ見せる */margin-top: 20px;
-  border: 1px solid #999; /* 表全体の外枠 */}
+  border-collapse: collapse;
+  margin-top: 20px;
+  border: 1px solid #999; }
+
 .book_table th,.book_table td {
-  border: 1px solid #ccc; /* 各セルの枠線 */padding: 8px 12px;
+  border: 1px solid #ccc; 
+  padding: 8px 12px;
   text-align: left;
   background-color: #fff;
 }
+
 .book_table th {
   background-color: #f5f5f5;
   font-weight: bold;
