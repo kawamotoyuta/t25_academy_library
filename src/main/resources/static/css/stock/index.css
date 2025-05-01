@@ -53,3 +53,22 @@
     justify-content: space-around;
     align-items: center;
 }
+
+#register-book-button {
+    background-color: #d4a115;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+}
+
+#register-book-button i {
+    margin-right: 8px;
+}
+
+#register-book-button:hover {
+    background-color: #d5ae1f;
+}
+
