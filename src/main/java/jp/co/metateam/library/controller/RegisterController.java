@@ -41,8 +41,6 @@ public class RegisterController {
         return "register";
     }
 
-    
-
     @PostMapping("/register")
     public String register(@Valid @ModelAttribute AccountDto accountDto, BindingResult result, RedirectAttributes ra) {
         try {
@@ -67,6 +65,7 @@ public class RegisterController {
             accountService.save(accountDto);
 
             return "redirect:login";
+            
         } catch (Exception e) {
             log.error(e.getMessage());
 

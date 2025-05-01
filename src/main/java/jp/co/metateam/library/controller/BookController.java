@@ -29,6 +29,7 @@ import lombok.extern.log4j.Log4j2;
 public class BookController {
     
     private final BookMstService bookMstService;
+    private Object window;
 
     @Autowired
     public BookController(BookMstService bookMstService){
@@ -53,6 +54,7 @@ public class BookController {
 
         return "/book/add";
     }
+
 
     /**
      * @param BookMstDto
@@ -82,7 +84,7 @@ public class BookController {
             
             bookMstService.save(bookMstDto);
 
-            return "/book/index";
+            return "redirect:/book/index";
 
         }catch(Exception e){
             log.error("登録失敗: " + e.getMessage());
@@ -96,8 +98,8 @@ public class BookController {
         }
     }
 
-}
 
+}
 
     
 
