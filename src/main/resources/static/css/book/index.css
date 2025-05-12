@@ -1,93 +1,47 @@
-.books_table {
- width: 100%;
- text-align: left;
- border-collapse: collapse;
- border-spacing: 0;
- border-radius:10px;
-}
-
-.books_table th{
-  padding: 10px;
-  background: rgba(0,0,0,0.06);
-  padding: 13px;
-  border: solid 1px #B9B9B9;
-  color: #545454;
-  font-size: 18px;
-}
-
-.books_table td{
-  text-align: left;
-  vertical-align: top;
-  background: #FFFFFF;
-  border: solid 1px #B9B9B9;
-  padding: 13px;
-  font-size: 20px;
-}
-
-.books_table td:nth-child(1){
-  width: 40%;
-}
-
-.books_table td:nth-child(1) .book_title_contents{
-  display: flex;
-  align-items: center;
-}
-
-.books_table td:nth-child(1) .book_title_contents span{
+.button-link {
   display: inline-block;
-  margin-left:10px;
+  padding: 0.5em 1em;
+  text-decoration: none;
+  background: #66d86f;/*ボタン色*/
+  color: #FFF;
+  border-bottom: solid 4px #627295;
+  border-radius: 3px;
+  
 }
 
-.books_table td .stockcount{
-  display: inline-block;
-  width: 50px;
-  text-align: center;
+.button-link:active {
+  /*ボタンを押したとき*/
+  -webkit-transform: translateY(4px);
+  transform: translateY(4px);/*下に動く*/
+  border-bottom: none;/*線を消す*/
 }
 
-.books_table td img{
-  margin: 8px 2px 0 2px;
-  height: auto;
-}
-.books_table td img:hover{
-  cursor: pointer;
-  opacity: 0.6;
-}
-.books_table td .edit_icon{
-  width:23px;
-}
-.books_table td .trash_icon{
-  width:19px;
+.book_table{
+  width: 90%;
+  border-collapse: separate;
+  border-spacing: 5px;
+  margin:auto
 }
 
-.books_table td a{
-  color: #0000EE;
+th,
+td {
+  padding: 20px;
+  border: 1px solid #000;
 }
 
-.book_table {
-  width: 100%;
+/*thとtdにそれぞれ背景色を追加*/
+th {
+  background-color: rgb(204, 204, 204);
+}
+
+/* table全体に適用する背景色 */
+table {
   border-collapse: collapse;
-  margin-top: 20px;
-}
-.book_table th, .book_table td {
-  border: 1px solid #ccc;
-  padding: 8px 12px;
-  text-align: left;
+  background: #eaf6fe;
 }
 
-.book_table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 20px;
-  border: 1px solid #999; }
-
-.book_table th,.book_table td {
-  border: 1px solid #ccc; 
-  padding: 8px 12px;
-  text-align: left;
-  background-color: #fff;
-}
-
-.book_table th {
-  background-color: #f5f5f5;
-  font-weight: bold;
+/* thの背景色*/
+table th {
+  color: #fff;
+  background: #14116e;
 }

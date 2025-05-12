@@ -4,10 +4,12 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import jp.co.metateam.library.model.BookMst;
+import jp.co.metateam.library.model.BookMstDto;
+
 import java.util.List;
 import java.util.Optional;
 
-public interface BookMstRepository extends JpaRepository<BookMst, Long> {
+public interface BookMstRepository extends JpaRepository<BookMst, Long > {
 
 	@Query(value = "SELECT * FROM book_mst LIMIT 1000", nativeQuery = true)
 	List<BookMst> findLimitedBook();
@@ -17,4 +19,6 @@ public interface BookMstRepository extends JpaRepository<BookMst, Long> {
 
 	@Query("SELECT b FROM BookMst b WHERE b.isbn = ?1")
     BookMst selectByIsbn(String isbn);
+
+
 }

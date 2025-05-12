@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{common :: meta_header('書籍編集',~{::link},~{::script})}">
+    <link rel="stylesheet" th:href="@{/css/book/edit.css}" />
+</head>
+<body>
+<div class="contents">
+    <div th:replace="~{common :: main_sidebar}"></div>
+    <div class="main_contents">
+        <div th:replace="~{common :: header}"></div>
+        <div class="inner_contents">
+            <h2 style="text-align: center;">書籍編集</h2>
+            <!-- 編集フォーム -->
+            <form th:action="@{/book/edit}" th:object="${bookMstDto}" method="post">
+                <!-- 編集対象の書籍ID（非表示） -->
+                <input type="hidden" th:field="*{id}" />
+                
+                <P>
+                <div>
+                    <label for="title">書籍名：</label>
+                    <!-- 書籍名もテキストボックスとして表示 -->
+                    <input type="text" th:field="*{title}" id="title" />
+                    <!-- 書籍名にエラーがあれば表示 -->
+                    <div th:if="${#fields.hasErrors('title')}" style="color:red;"><span th:errors="*{title}"></span>
+                </div>
+                </p>
+
+                <div>
+                    <label for="isbn">ISBN：</label>
+                    <!-- ISBNはテキストボックスとして表示 -->
+                    <input type="text" th:field="*{isbn}" id="isbn" />
+                    <!-- ISBNにエラーがあれば表示 -->
+                    <div th:if="${#fields.hasErrors('isbn')}" style="color:red;"><span th:errors="*{isbn}"></span>
+                </div>
+                
+                <div class="button-area">
+                    <button type="submit">更新</button>
+                    <!-- キャンセルボタン -->
+                    <button type="button" class="cancel-button" th:onclick="|window.location.href='@{/book/index}'|">キャンセル</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>

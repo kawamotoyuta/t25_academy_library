@@ -10,27 +10,55 @@
         <div th:replace="~{common :: main_sidebar}"></div>
         <div class="main_contents">
             <div th:replace="~{common :: header}"></div>
-            <div class="inner_contens">
+            <div class="inner_contents">
                 <div class="page_title">書籍一覧</div>
 
-                <div>
+                <div  style="text-align: right;">
                     <button class="button-link"
-                        onclick="window.location.href='http://localhost:8080/mt_library/book/add'">書籍登録</button>
+                    th:onclick="|window.location.href='@{/book/add}'|">書籍登録</button>
                 </div>
                 
+                <!-- 成功メッセージ -->
+
+                <div th:if="${message}" style="display: flex; justify-content: center; align-items: center; height: 100px;">
+                <p th:text="${message}" style="color:green; font-size: 30px; text-align: center;"></p>
+                </div>
+
+                <!-- 失敗メッセージ（エラーメッセージ） -->
+                <div th:if="${errormessage}" style="display: flex; justify-content: center; align-items: center; height: 100px;">
+                <p th:text="${errormessage}" style="color:red; font-size: 30px; text-align: center;"></p>
+                </div>
     
 
                 <table class="book_table">
                         <thead>
                             <tr>
+                                <th>操作</th>
                                 <th>書籍名</th>
                                 <th>ISBN</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr th:each="book : ${bookMstList}" >
-                                <td th:text="${book.title}">title</td>
-                                <td th:text="${book.isbn}">isbn</td>
+
+                                <td>
+                                     <!-- 編集ボタン -->
+                                    <a th:href="@{edit/{id}(id=${book.id})}">
+                                    <button>✏️</button>
+                                    </a>
+
+                                    <!-- 削除ボタン -->
+                                    <form th:action="@{/book/delete/{id}(id=${book.id})}" method="post" style="display:inline;" 
+                                    onsubmit="return confirm('本当に削除しますか？');">                                   
+                                    <button type="submit">🗑️</button>
+                                    </form>
+
+
+                                </td>
+
+                                    <td th:text="${book.title}">title</td>
+                                    <td th:text="${book.isbn}">isbn</td>
+
                             </tr>
                         </tbody>
                 </table>
