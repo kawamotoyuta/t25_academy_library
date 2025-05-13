@@ -5,6 +5,51 @@
     <link rel="stylesheet" th:href="@{/css/book/index.css}" />
     <script type="text/javascript" th:src="@{/js/book/index.js}"></script>
 </head>
+
+<!-- エラーメッセージ用 -->
+<dialog id="errorDialog" th:if="${errormessage}">
+    <p th:text="${errormessage}">エラー内容</p>
+    <button onclick="closeErrorDialog()">OK</button>
+</dialog>
+
+<script>
+    window.addEventListener('DOMContentLoaded', function () {
+        const dialog = document.getElementById('errorDialog');
+        if (dialog) {
+            dialog.showModal();
+        }
+    });
+
+    function closeErrorDialog() {
+        const dialog = document.getElementById('errorDialog');
+        if (dialog) {
+            dialog.close();
+        }
+    }
+</script>
+
+<!-- 通常メッセージ用 -->
+<dialog id="messageDialog" th:if="${message}">
+    <p th:text="${message}">メッセージ内容</p>
+    <button onclick="closeMessageDialog()">OK</button>
+</dialog>
+
+<script>
+    window.addEventListener('DOMContentLoaded', function () {
+        const dialog = document.getElementById('messageDialog');
+        if (dialog) {
+            dialog.showModal();
+        }
+    });
+
+    function closeMessageDialog() {
+        const dialog = document.getElementById('messageDialog');
+        if (dialog) {
+            dialog.close();
+        }
+    }
+</script>
+
 <body>
     <div class="contents">
         <div th:replace="~{common :: main_sidebar}"></div>
@@ -16,17 +61,6 @@
                 <div  style="text-align: right;">
                     <button class="button-link"
                     th:onclick="|window.location.href='@{/book/add}'|">書籍登録</button>
-                </div>
-                
-                <!-- 成功メッセージ -->
-
-                <div th:if="${message}" style="display: flex; justify-content: center; align-items: center; height: 100px;">
-                <p th:text="${message}" style="color:green; font-size: 30px; text-align: center;"></p>
-                </div>
-
-                <!-- 失敗メッセージ（エラーメッセージ） -->
-                <div th:if="${errormessage}" style="display: flex; justify-content: center; align-items: center; height: 100px;">
-                <p th:text="${errormessage}" style="color:red; font-size: 30px; text-align: center;"></p>
                 </div>
     
 
@@ -41,7 +75,7 @@
                         <tbody>
                             <tr th:each="book : ${bookMstList}" >
 
-                                <td>
+                                <td style="text-align: center;">
                                      <!-- 編集ボタン -->
                                     <a th:href="@{edit/{id}(id=${book.id})}">
                                     <button>✏️</button>

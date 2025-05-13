@@ -56,66 +56,6 @@ public class BookController {
         return "/book/add";
     }
 
-    @GetMapping("/book/edit/{id}")
-    public String edit(@PathVariable("id") Long id, Model model, RedirectAttributes ra) {
-    Optional<BookMst> bookOpt = bookMstService.findById(id);
-        if (bookOpt.isEmpty()) {
-        ra.addFlashAttribute("errormessage", "該当する書籍が見つかりませんでした。");
-        return "redirect:/book/index";
-    }
-
-        BookMst book = bookOpt.get();
-        BookMstDto dto = new BookMstDto();
-        dto.setId(book.getId());
-        dto.setIsbn(book.getIsbn());
-        dto.setTitle(book.getTitle());
-
-        model.addAttribute("bookMstDto", dto);
-
-        return "/book/edit"; // ← 作成するテンプレート名
-}
-
-    @PostMapping("/book/edit")
-    public String update(@Valid @ModelAttribute BookMstDto bookMstDto, BindingResult result, Model model, RedirectAttributes ra) {
-    if (result.hasErrors()) {
-        model.addAttribute("bookMstDto", bookMstDto);
-        return "/book/edit";
-    }
-
-    try {
-        bookMstService.update(bookMstDto);
-        ra.addFlashAttribute("message", "更新完了しました");
-        return "redirect:/book/index";
-
-      } catch (IllegalArgumentException e) {
-        // 変更なし or 対象が見つからない等 → メッセージ付きでindexにリダイレクト
-        ra.addFlashAttribute("errormessage", e.getMessage());
-        return "redirect:/book/index";
-
-    } catch (Exception e) {
-        // その他の予期しないエラー
-        ra.addFlashAttribute("errormessage", "更新に失敗しました。もう一度お試しください。");
-        return "redirect:/book/index";
-    }
-}
-
-
-    @PostMapping("/book/delete/{id}")
-    public String delete(@PathVariable Long id, RedirectAttributes ra) {
-    try {
-        bookMstService.deleteById(id);
-        ra.addFlashAttribute("message", "削除が完了しました。");
-        ra.addFlashAttribute("error", false);
-
-    } catch (Exception e) {
-        ra.addFlashAttribute("errorMessage", "削除に失敗しました。");
-        ra.addFlashAttribute("error", true);
-    }
-        return "redirect:/book/index";
-}
-
-
-
     /**
      * @param BookMstDto
      * @param result
@@ -148,22 +88,89 @@ public class BookController {
 
         }catch(Exception e){
             log.error("登録失敗: " + e.getMessage());
-            log.error("書籍情報の保存に失敗しました",e);
             model.addAttribute("errorMessage","書籍情報の保存中にエラーが発生しました。もう一度入力をしてください。");
 
-            return "redirect:/add";
-
-            //
-
-        }
-
-    
+            return "redirect:/book/add";
         
+            }
+    
+    }
 
+    @GetMapping("/book/edit/{id}")
+    public String edit(@PathVariable("id") Long id, Model model, RedirectAttributes ra) {
+    Optional<BookMst> bookOpt = bookMstService.findById(id);
+        if (bookOpt.isEmpty()) {
+        ra.addFlashAttribute("errormessage", "該当する書籍が見つかりませんでした。");
+        return "redirect:/book/index";
+    }
+
+        BookMst book = bookOpt.get();
+
+        if (book.getDeletedAt() != null) {
+        ra.addFlashAttribute("errormessage", "この書籍は削除済みのため編集できません。");
+        return "redirect:/book/index";
+    }
+
+        BookMstDto dto = new BookMstDto();
+        dto.setId(book.getId());
+        dto.setIsbn(book.getIsbn());
+        dto.setTitle(book.getTitle());
+
+        model.addAttribute("bookMstDto", dto);
+
+        return "/book/edit"; // ← 作成するテンプレート名
+    }
+
+    @PostMapping("/book/edit")
+    public String update(@Valid @ModelAttribute BookMstDto bookMstDto, BindingResult result, Model model, RedirectAttributes ra) {
+    if (result.hasErrors()) {
+        model.addAttribute("bookMstDto", bookMstDto);
+        return "/book/edit";
+    }
+
+    try {
+        bookMstService.update(bookMstDto);
+        ra.addFlashAttribute("message", "更新完了しました");
+        return "redirect:/book/index";
+
+      } catch (IllegalArgumentException e) {
+        // 変更なし or 対象が見つからない等 → メッセージ付きでindexにリダイレクト
+        ra.addFlashAttribute("errormessage", e.getMessage());
+        return "redirect:/book/index";
+
+    } catch (Exception e) {
+        // その他の予期しないエラー
+        ra.addFlashAttribute("errormessage", "更新に失敗しました。もう一度お試しください。");
+        return "redirect:/book/index";
+        }
     }
 
 
+    @PostMapping("/book/delete/{id}")
+    public String delete(@PathVariable Long id, RedirectAttributes ra) {
+    try {
+        bookMstService.deleteById(id);
+        ra.addFlashAttribute("message", "削除が完了しました。");
+        ra.addFlashAttribute("error", false);
+
+    } catch (IllegalArgumentException e) {
+        // 削除済みなどロジック系エラー
+        ra.addFlashAttribute("errormessage", e.getMessage());
+        return "redirect:/book/index";
+
+        
+    } catch (Exception e) {
+        ra.addFlashAttribute("errorMessage", "削除に失敗しました。");
+        ra.addFlashAttribute("error", true);
+    }
+        return "redirect:/book/index";
+
+
+    }
+
 }
+
+
 
 
 
