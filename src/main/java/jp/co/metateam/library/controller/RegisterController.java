@@ -65,7 +65,7 @@ public class RegisterController {
             accountService.save(accountDto);
 
             return "redirect:login";
-            
+
         } catch (Exception e) {
             log.error(e.getMessage());
 
@@ -76,3 +76,4 @@ public class RegisterController {
         }
     }
 }
+

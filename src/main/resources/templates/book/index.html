@@ -5,32 +5,94 @@
     <link rel="stylesheet" th:href="@{/css/book/index.css}" />
     <script type="text/javascript" th:src="@{/js/book/index.js}"></script>
 </head>
+
+<!-- エラーメッセージ用 -->
+<dialog id="errorDialog" th:if="${errormessage}">
+    <p th:text="${errormessage}">エラー内容</p>
+    <button onclick="closeErrorDialog()">OK</button>
+</dialog>
+
+<script>
+    window.addEventListener('DOMContentLoaded', function () {
+        const dialog = document.getElementById('errorDialog');
+        if (dialog) {
+            dialog.showModal();
+        }
+    });
+
+    function closeErrorDialog() {
+        const dialog = document.getElementById('errorDialog');
+        if (dialog) {
+            dialog.close();
+        }
+    }
+</script>
+
+<!-- 通常メッセージ用 -->
+<dialog id="messageDialog" th:if="${message}">
+    <p th:text="${message}">メッセージ内容</p>
+    <button onclick="closeMessageDialog()">OK</button>
+</dialog>
+
+<script>
+    window.addEventListener('DOMContentLoaded', function () {
+        const dialog = document.getElementById('messageDialog');
+        if (dialog) {
+            dialog.showModal();
+        }
+    });
+
+    function closeMessageDialog() {
+        const dialog = document.getElementById('messageDialog');
+        if (dialog) {
+            dialog.close();
+        }
+    }
+</script>
+
 <body>
     <div class="contents">
         <div th:replace="~{common :: main_sidebar}"></div>
         <div class="main_contents">
             <div th:replace="~{common :: header}"></div>
-            <div class="inner_contens">
+            <div class="inner_contents">
                 <div class="page_title">書籍一覧</div>
 
-                <div>
+                <div  style="text-align: right;">
                     <button class="button-link"
-                        onclick="window.location.href='http://localhost:8080/mt_library/book/add'">書籍登録</button>
+                    th:onclick="|window.location.href='@{/book/add}'|">書籍登録</button>
                 </div>
-                
     
 
                 <table class="book_table">
                         <thead>
                             <tr>
+                                <th>操作</th>
                                 <th>書籍名</th>
                                 <th>ISBN</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr th:each="book : ${bookMstList}" >
-                                <td th:text="${book.title}">title</td>
-                                <td th:text="${book.isbn}">isbn</td>
+
+                                <td style="text-align: center;">
+                                     <!-- 編集ボタン -->
+                                    <a th:href="@{edit/{id}(id=${book.id})}">
+                                    <button>✏️</button>
+                                    </a>
+
+                                    <!-- 削除ボタン -->
+                                    <form th:action="@{/book/delete/{id}(id=${book.id})}" method="post" style="display:inline;" 
+                                    onsubmit="return confirm('本当に削除しますか？');">                                   
+                                    <button type="submit">🗑️</button>
+                                    </form>
+
+
+                                </td>
+
+                                    <td th:text="${book.title}">title</td>
+                                    <td th:text="${book.isbn}">isbn</td>
+
                             </tr>
                         </tbody>
                 </table>

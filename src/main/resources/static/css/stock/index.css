@@ -1,74 +1,14 @@
-.add_btn {
-    display: flex;
-    justify-content: end;
-    margin-bottom: 30px;
-    text-align: right;
-}
-.add_btn a {
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    color: #545454;
-    padding: 10px 20px;
-    text-decoration: none;
-    background-color: #9CF2D3;
+.book_table{
+    width: 50px;
 }
 
-.add_btn a img {
-    width: 20px;
-    height: 20px;
-    margin-right: 10px;
-    position: relative;
-    top: 3px;
-}
-#stock_table {
-    width: 100%;
-    border-collapse: collapse;
-    table-layout: fixed;
+th,
+td {
+  padding: 5px 10px;
+  border: 1px solid #000;
 }
 
-#stock_table tr th,
-#stock_table tr td {
-    border: 1px solid #B9B9B9;
-    padding: 10px;
+/*thとtdにそれぞれ背景色を追加*/
+th {
+  background-color: rgb(204, 204, 204);
 }
-
-#stock_table tr th {
-    background-color: #E1E1E2;
-}
-
-#stock_table tr th:nth-of-type(1) {
-    width: 160px;
-}
-#stock_table tr th:nth-of-type(2) {
-    min-width: 250px;
-}
-#stock_table tr th:nth-of-type(3) {
-    width: 130px;
-}
-
-#stock_table .stock_item_menu {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
-    align-items: center;
-}
-
-#register-book-button {
-    background-color: #d4a115;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-}
-
-#register-book-button i {
-    margin-right: 8px;
-}
-
-#register-book-button:hover {
-    background-color: #d5ae1f;
-}
-
