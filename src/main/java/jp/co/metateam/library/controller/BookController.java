@@ -122,10 +122,43 @@ public class BookController {
     }
 
     @PostMapping("/book/edit")
-    public String update(@Valid @ModelAttribute BookMstDto bookMstDto, BindingResult result, Model model, RedirectAttributes ra) {
+public String update(@Valid @ModelAttribute BookMstDto bookMstDto, BindingResult result, Model model, RedirectAttributes ra) {
+
+    // ISBN重複チェック（他の書籍と重複していないか）
+    BookMst isbnExist = bookMstService.selectByIsbn(bookMstDto.getIsbn());
+    if (isbnExist != null && !isbnExist.getId().equals(bookMstDto.getId())) {
+        result.rejectValue("isbn", "error.value", "ISBNは登録済みです。");
+        model.addAttribute("bookMstDto", bookMstDto);
+        return "/book/edit";
+    }
+
     if (result.hasErrors()) {
         model.addAttribute("bookMstDto", bookMstDto);
         return "/book/edit";
+    }
+
+    Optional<BookMst> existingOpt = bookMstService.findById(bookMstDto.getId());
+
+    if (existingOpt.isEmpty()) {
+        ra.addFlashAttribute("errormessage", "対象の書籍が見つかりませんでした。");
+        return "redirect:/book/index";
+    }
+
+    BookMst existing = existingOpt.get();
+
+    if (existing.getDeletedAt() != null) {
+        ra.addFlashAttribute("errormessage", "この書籍は削除されているため、編集できません。");
+        return "redirect:/book/index";
+    }
+
+    // 変更点チェック
+    boolean noChanges =
+        existing.getIsbn().equals(bookMstDto.getIsbn()) &&
+        existing.getTitle().equals(bookMstDto.getTitle());
+
+    if (noChanges) {
+    ra.addFlashAttribute("infomessage", "変更点はありません。");
+    return "redirect:/book/index";
     }
 
     try {
@@ -133,17 +166,13 @@ public class BookController {
         ra.addFlashAttribute("message", "更新完了しました");
         return "redirect:/book/index";
 
-      } catch (IllegalArgumentException e) {
-        // 変更なし or 対象が見つからない等 → メッセージ付きでindexにリダイレクト
-        ra.addFlashAttribute("errormessage", e.getMessage());
-        return "redirect:/book/index";
-
     } catch (Exception e) {
-        // その他の予期しないエラー
         ra.addFlashAttribute("errormessage", "更新に失敗しました。もう一度お試しください。");
         return "redirect:/book/index";
-        }
+        
     }
+}
+
 
 
     @PostMapping("/book/delete/{id}")
@@ -169,9 +198,5 @@ public class BookController {
     }
 
 }
-
-
-
-
 
 

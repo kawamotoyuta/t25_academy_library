@@ -79,23 +79,11 @@ public class BookMstService {
     }
 
 
-    BookMst existing = bookMstRepository.selectByIsbn(dto.getIsbn());
-    if (existing != null && !existing.getId().equals(dto.getId())) {
-        throw new IllegalArgumentException("ISBNが他の書籍と重複しています。");
-    }
-
-    // 変更がないかチェック
-    boolean noChanges = book.getIsbn().equals(dto.getIsbn()) &&
-                        book.getTitle().equals(dto.getTitle());
-
-    if (noChanges) {
-        throw new IllegalArgumentException("変更点はありません。");
-    }
 
     // 差分があれば更新
     book.setIsbn(dto.getIsbn());
     book.setTitle(dto.getTitle());
-    bookMstRepository.save(book); // JPAのsaveは更新にも対応
+    bookMstRepository.save(book); 
 }
     
     public List<BookMstDto> findAvailableWithStockCount() {
@@ -124,6 +112,16 @@ public class BookMstService {
 
         this.bookMstRepository.save(bookMst);
 
+    }
+
+    public Object getIsbn() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getIsbn'");
+    }
+
+    public Object getTitle() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getTitle'");
     }
 
 }

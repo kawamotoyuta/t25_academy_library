@@ -35,8 +35,7 @@ public class BookMst {
     @Column(name = "deleted_at")
     private Timestamp deletedAt;
 
-    /** Getters */
-
+    // Getters
     public Long getId() {
         return this.id;
     }
@@ -53,8 +52,7 @@ public class BookMst {
         return this.deletedAt;
     }
 
-    /** Setters */
-
+    // Setters
     public void setId(Long id) {
         this.id = id;
     }
