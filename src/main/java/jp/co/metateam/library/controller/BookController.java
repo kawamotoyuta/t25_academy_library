@@ -118,13 +118,13 @@ public class BookController {
 
         model.addAttribute("bookMstDto", dto);
 
-        return "/book/edit"; // ← 作成するテンプレート名
+        return "/book/edit";
     }
 
     @PostMapping("/book/edit")
-public String update(@Valid @ModelAttribute BookMstDto bookMstDto, BindingResult result, Model model, RedirectAttributes ra) {
+    public String update(@Valid @ModelAttribute BookMstDto bookMstDto, BindingResult result, Model model, RedirectAttributes ra) {
 
-    // ISBN重複チェック（他の書籍と重複していないか）
+    // ISBN重複チェック
     BookMst isbnExist = bookMstService.selectByIsbn(bookMstDto.getIsbn());
     if (isbnExist != null && !isbnExist.getId().equals(bookMstDto.getId())) {
         result.rejectValue("isbn", "error.value", "ISBNは登録済みです。");
@@ -183,7 +183,7 @@ public String update(@Valid @ModelAttribute BookMstDto bookMstDto, BindingResult
         ra.addFlashAttribute("error", false);
 
     } catch (IllegalArgumentException e) {
-        // 削除済みなどロジック系エラー
+        // 削除済みエラー
         ra.addFlashAttribute("errormessage", e.getMessage());
         return "redirect:/book/index";
 

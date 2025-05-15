@@ -28,6 +28,7 @@ public class BookMstDto {
     private String title;
     
     private Timestamp deletedAt;
+    private Boolean deleteFlag;
 
     private BookMst bookMst;
     

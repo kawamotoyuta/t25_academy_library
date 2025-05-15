@@ -54,12 +54,18 @@ public class BookMstService {
     
     BookMst book = bookOpt.get();
 
-    if (book.getDeletedAt() != null) {
+if (book.getDeleteFlag() != null && book.getDeleteFlag()) {
     throw new IllegalArgumentException("この書籍は既に削除されています。");
     }
     
-    book.setDeletedAt(new Timestamp(System.currentTimeMillis()));
-    bookMstRepository.save(book);  // 論理削除として更新保存
+    // 論理削除処理
+    book.setDeleteFlag(Boolean.FALSE); // 削除されていない判断（0）
+    book.setDeletedAt(null);//削除されてないからNULL
+    
+    book.setDeleteFlag(Boolean.TRUE);  // 削除されている判断（1）
+    book.setDeletedAt(new Timestamp(System.currentTimeMillis()));//削除日時
+
+    bookMstRepository.save(book);  // 更新保存
 }
 
 
