@@ -54,7 +54,7 @@ public class BookMstService {
     
     BookMst book = bookOpt.get();
 
-if (book.getDeleteFlag() != null && book.getDeleteFlag()) {
+    if (book.getDeleteFlag() != null && book.getDeleteFlag()) {
     throw new IllegalArgumentException("この書籍は既に削除されています。");
     }
     
@@ -79,11 +79,9 @@ if (book.getDeleteFlag() != null && book.getDeleteFlag()) {
 
     BookMst book = bookOpt.get();
 
-
-    if (book.getDeletedAt() != null) {
-        throw new IllegalArgumentException("この書籍は削除されています。編集できません。");
+    if (book.getDeleteFlag() != null && book.getDeleteFlag()) {
+    throw new IllegalArgumentException("この書籍は既に削除されています。編集できません。");
     }
-
 
 
     // 差分があれば更新
@@ -115,6 +113,7 @@ if (book.getDeleteFlag() != null && book.getDeleteFlag()) {
         BookMst bookMst = new BookMst();
         bookMst.setIsbn(bookMstDto.getIsbn());
         bookMst.setTitle(bookMstDto.getTitle());
+        bookMst.setDeleteFlag(Boolean.FALSE); 
 
         this.bookMstRepository.save(bookMst);
 

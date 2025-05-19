@@ -106,8 +106,8 @@ public class BookController {
 
         BookMst book = bookOpt.get();
 
-        if (book.getDeletedAt() != null) {
-        ra.addFlashAttribute("errormessage", "この書籍は削除済みのため編集できません。");
+        if (Boolean.TRUE.equals(book.getDeleteFlag())) {
+        ra.addFlashAttribute("errormessage", "対象の書籍は削除されているため、編集できません。");
         return "redirect:/book/index";
     }
 
@@ -139,17 +139,13 @@ public class BookController {
 
     Optional<BookMst> existingOpt = bookMstService.findById(bookMstDto.getId());
 
-    if (existingOpt.isEmpty()) {
-        ra.addFlashAttribute("errormessage", "対象の書籍が見つかりませんでした。");
+    if (existingOpt.isEmpty() || Boolean.TRUE.equals(existingOpt.get().getDeleteFlag())) {
+    ra.addFlashAttribute("errormessage", "対象の書籍が見つからないか、削除されているため、編集できません。");
         return "redirect:/book/index";
     }
+
 
     BookMst existing = existingOpt.get();
-
-    if (existing.getDeletedAt() != null) {
-        ra.addFlashAttribute("errormessage", "この書籍は削除されているため、編集できません。");
-        return "redirect:/book/index";
-    }
 
     // 変更点チェック
     boolean noChanges =
