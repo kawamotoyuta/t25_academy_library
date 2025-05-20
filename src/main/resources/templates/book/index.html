@@ -50,6 +50,29 @@
     }
 </script>
 
+<!-- 情報メッセージ用 -->
+<dialog id="infoDialog" th:if="${infomessage}">
+    <p th:text="${infomessage}">情報メッセージ</p>
+    <button onclick="closeInfoDialog()">OK</button>
+</dialog>
+
+<script>
+    window.addEventListener('DOMContentLoaded', function () {
+        const infoDialog = document.getElementById('infoDialog');
+        if (infoDialog) {
+            infoDialog.showModal();
+        }
+    });
+
+    function closeInfoDialog() {
+        const infoDialog = document.getElementById('infoDialog');
+        if (infoDialog) {
+            infoDialog.close();
+        }
+    }
+</script>
+
+
 <body>
     <div class="contents">
         <div th:replace="~{common :: main_sidebar}"></div>

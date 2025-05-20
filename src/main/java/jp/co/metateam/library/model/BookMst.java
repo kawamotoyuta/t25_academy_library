@@ -35,8 +35,11 @@ public class BookMst {
     @Column(name = "deleted_at")
     private Timestamp deletedAt;
 
-    /** Getters */
+    /** 削除フラグ */
+    @Column(name = "delete_flag")
+    private Boolean deleteFlag = Boolean.FALSE;
 
+    // Getters
     public Long getId() {
         return this.id;
     }
@@ -53,8 +56,11 @@ public class BookMst {
         return this.deletedAt;
     }
 
-    /** Setters */
+    public Boolean getDeleteFlag() {
+        return this.deleteFlag;
+    }
 
+    // Setters
     public void setId(Long id) {
         this.id = id;
     }
@@ -70,4 +76,10 @@ public class BookMst {
     public void setDeletedAt(Timestamp deletedAt) {
         this.deletedAt = deletedAt;
     }
+
+    public void setDeleteFlag(Boolean deleteFlag){
+        this.deleteFlag = deleteFlag;
+    }
+
+
 }

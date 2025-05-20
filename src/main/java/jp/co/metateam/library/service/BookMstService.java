@@ -54,12 +54,15 @@ public class BookMstService {
     
     BookMst book = bookOpt.get();
 
-    if (book.getDeletedAt() != null) {
+    if (book.getDeleteFlag() != null && book.getDeleteFlag()) {
     throw new IllegalArgumentException("この書籍は既に削除されています。");
     }
     
-    book.setDeletedAt(new Timestamp(System.currentTimeMillis()));
-    bookMstRepository.save(book);  // 論理削除として更新保存
+    // 論理削除処理
+    book.setDeleteFlag(Boolean.TRUE);  // 削除されている判断（1）
+    book.setDeletedAt(new Timestamp(System.currentTimeMillis()));//削除日時
+
+    bookMstRepository.save(book);  // 更新保存
 }
 
 
@@ -73,29 +76,15 @@ public class BookMstService {
 
     BookMst book = bookOpt.get();
 
-
-    if (book.getDeletedAt() != null) {
-        throw new IllegalArgumentException("この書籍は削除されています。編集できません。");
+    if (book.getDeleteFlag() != null && book.getDeleteFlag()) {
+    throw new IllegalArgumentException("この書籍は既に削除されています。編集できません。");
     }
 
-
-    BookMst existing = bookMstRepository.selectByIsbn(dto.getIsbn());
-    if (existing != null && !existing.getId().equals(dto.getId())) {
-        throw new IllegalArgumentException("ISBNが他の書籍と重複しています。");
-    }
-
-    // 変更がないかチェック
-    boolean noChanges = book.getIsbn().equals(dto.getIsbn()) &&
-                        book.getTitle().equals(dto.getTitle());
-
-    if (noChanges) {
-        throw new IllegalArgumentException("変更点はありません。");
-    }
 
     // 差分があれば更新
     book.setIsbn(dto.getIsbn());
     book.setTitle(dto.getTitle());
-    bookMstRepository.save(book); // JPAのsaveは更新にも対応
+    bookMstRepository.save(book); 
 }
     
     public List<BookMstDto> findAvailableWithStockCount() {
@@ -121,9 +110,20 @@ public class BookMstService {
         BookMst bookMst = new BookMst();
         bookMst.setIsbn(bookMstDto.getIsbn());
         bookMst.setTitle(bookMstDto.getTitle());
+        bookMst.setDeleteFlag(Boolean.FALSE); 
 
         this.bookMstRepository.save(bookMst);
 
+    }
+
+    public Object getIsbn() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getIsbn'");
+    }
+
+    public Object getTitle() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getTitle'");
     }
 
 }
