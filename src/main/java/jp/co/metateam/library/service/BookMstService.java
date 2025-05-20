@@ -59,9 +59,6 @@ public class BookMstService {
     }
     
     // 論理削除処理
-    book.setDeleteFlag(Boolean.FALSE); // 削除されていない判断（0）
-    book.setDeletedAt(null);//削除されてないからNULL
-    
     book.setDeleteFlag(Boolean.TRUE);  // 削除されている判断（1）
     book.setDeletedAt(new Timestamp(System.currentTimeMillis()));//削除日時
 
